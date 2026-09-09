@@ -1,0 +1,324 @@
+{
+  "name": "ICN292-Lab3-Acevedo-Vicente-resumen",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 20
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "725c621b-bd14-4259-97d8-1e32af54f36b",
+      "name": "Todos los dias 8"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1CVabloGH67_Yak5QOgbLIOkjLFat69rdYVxtrkN3A48",
+          "mode": "list",
+          "cachedResultName": "registro_devoluciones",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CVabloGH67_Yak5QOgbLIOkjLFat69rdYVxtrkN3A48/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "registro",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CVabloGH67_Yak5QOgbLIOkjLFat69rdYVxtrkN3A48/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "8ac9425d-4bf8-409a-8f7d-6f72937cbc3c",
+      "name": "leer registro",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "HrImQ1qAybpf8Hpg",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "53315768-a7a4-4f60-9312-3957057bc7a4",
+              "leftValue": "={{ $json.id_solicitud }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        0
+      ],
+      "id": "322131ba-49b7-4cf2-9aef-b810424ea8c0",
+      "name": "solo de hoy"
+    },
+    {
+      "parameters": {
+        "fieldsToSummarize": {
+          "values": [
+            {
+              "field": "id_solicitud"
+            },
+            {
+              "aggregation": "sum",
+              "field": "monto"
+            }
+          ]
+        },
+        "fieldsToSplitBy": "ruta",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.summarize",
+      "typeVersion": 1.1,
+      "position": [
+        896,
+        0
+      ],
+      "id": "07a42154-d388-456a-bb5a-c25fd5438fff",
+      "name": "ruta"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "eb029856-06f0-4aba-82ca-c371e7c01c15",
+      "name": "juntar"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2e39e0ba-d82a-4088-bd3e-0d637d533a77",
+              "name": "fecha",
+              "value": "={{ $now.toFormat('dd-MM-yyyy') }}",
+              "type": "string"
+            },
+            {
+              "id": "ee1c8f43-9b3c-44d6-9760-75b8b00adc88",
+              "name": "solicitudes_totales",
+              "value": "={{ $json.data.reduce((a,r) => a + r.count_id_solicitud, 0) }}",
+              "type": "number"
+            },
+            {
+              "id": "7a0d4dd8-dde9-4631-9cba-988199f7b67e",
+              "name": "monto_total_dia",
+              "value": "={{ $json.data.reduce((a,r) => a + r.sum_monto, 0) }}",
+              "type": "number"
+            },
+            {
+              "id": "405ae040-c911-498b-9c4d-1f1f42617dc2",
+              "name": "tasa_aprobacion_auto",
+              "value": "={{ ($json.data.reduce((a,r) => a + (r.ruta === 'APROBACION' ? r.count_id_solicitud : 0), 0) / $json.data.reduce((a,r) => a + r.count_id_solicitud, 0) * 100).toFixed(1) + ' %' }}",
+              "type": "string"
+            },
+            {
+              "id": "27beb5c0-092c-4c8d-857c-952d6e9b2f91",
+              "name": "mensaje",
+              "value": "={{ 'Resumen devoluciones Andes Hogar - ' + $now.toFormat('dd-MM-yyyy') + '\\n\\nTotal solicitudes: ' + $json.data.reduce((a,r) => a + r.count_id_solicitud, 0) + '\\nMonto total: $' + $json.data.reduce((a,r) => a + r.sum_monto, 0) + '\\n\\nDetalle por ruta:\\n' + $json.data.map(r => '- ' + r.ruta + ': ' + r.count_id_solicitud + ' solicitudes, $' + r.sum_monto).join('\\n') + '\\n\\nTasa de aprobación automática: ' + ($json.data.reduce((a,r) => a + (r.ruta === 'APROBACION' ? r.count_id_solicitud : 0), 0) / $json.data.reduce((a,r) => a + r.count_id_solicitud, 0) * 100).toFixed(1) + ' %' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        1344,
+        0
+      ],
+      "id": "a127a64e-29c9-4aa6-b0c9-c5a17cb7ac59",
+      "name": "mensaje del dia"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3ec9e4d8-afa4-4427-93b7-70d4769959ec",
+              "leftValue": "={{ $json.id_solicitud }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        -128
+      ],
+      "id": "1b8b80e4-bf4f-4cb0-89c4-12a822bf9766",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b6ebca93-22d7-49a8-ba02-290db5d0811f",
+              "name": "mensaje",
+              "value": "Resumen devoluciones Andes Hogar 0 solicitudes hoy",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        688,
+        -208
+      ],
+      "id": "f7d3f284-ca73-4c94-be56-213673280a03",
+      "name": "mensaje sin solicitudes"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Todos los dias 8": {
+      "main": [
+        [
+          {
+            "node": "leer registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leer registro": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "solo de hoy": {
+      "main": [
+        [
+          {
+            "node": "ruta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ruta": {
+      "main": [
+        [
+          {
+            "node": "juntar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "juntar": {
+      "main": [
+        [
+          {
+            "node": "mensaje del dia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "mensaje sin solicitudes",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "solo de hoy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "54376c12-26e2-4e84-b0fb-9aabb7a0b97e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cea3231b2dab2b8845b4ed4c2796280322a47d794aad1e93d7e8d87488aa65fc"
+  },
+  "nodeGroups": [],
+  "id": "oQ0nqipeFet22Gtr",
+  "tags": []
+}

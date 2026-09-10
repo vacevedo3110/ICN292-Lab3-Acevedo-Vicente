@@ -1,10 +1,10 @@
 # ICN-292 Sistemas de Información para la Gestión
 ## Laboratorio 3: Automatización de procesos con n8n.
 
-* **Estudiante:** Vicente Ignacio Acevedo Campos
+* **Nombre:** Vicente Ignacio Acevedo Campos
 * **RUT:** 21.430.418-K
 * **Semilla (S):** 418
-* **Fecha:** 11 de Septiembre 2026
+* **Fecha:** 23 de Septiembre 2026
 
 
 ### Parámetros

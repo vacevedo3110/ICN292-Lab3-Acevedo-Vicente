@@ -233,7 +233,7 @@
             {
               "id": "fd5281ff-b132-4f99-98f4-777797564bc2",
               "name": "motivo",
-              "value": "={{ $json.body.id_solicitud ? 'monto ausente o no mayor que cero' : 'falta el identificador de la solicitud' }}",
+              "value": "={{ $json.body.id_solicitud ? 'no registra monto o no mayor que cero' : 'falta la solicitud' }}",
               "type": "string"
             },
             {

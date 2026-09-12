@@ -1,0 +1,15 @@
+fecha,id_solicitud,sku,monto,monto_uf,dias_desde_compra,estado_producto,ruta,motivo,U_aplicado,D_aplicado
+2026-09-12T15:52:54.637-03:00,DEV-1116,TE-330,69980,"1,71",5,abierto_sin_uso,REVISION,monto sobre el umbral: supera los 48000,48000,21
+2026-09-12T15:52:56.338-03:00,DEV-1117,HV-050,24990,"0,61",12,con_fallas,REVISION,producto declarado con fallas,48000,21
+2026-09-12T15:52:57.615-03:00,DEV-1118,MW-150,79990,"1,96",4,sin_abrir,REVISION,monto sobre el umbral: supera los 48000,48000,21
+2026-09-12T15:52:59.251-03:00,DEV-1119,PL-120,45990,"1,12",25,danado_por_uso,RECHAZO,"fuera de plazo: 25 dias, el maximo es 21",48000,21
+2026-09-12T15:53:00.786-03:00,DEV-1120,AS-260,89990,"2,2",2,con_fallas,REVISION,monto sobre el umbral: supera los 48000,48000,21
+2026-09-12T15:53:02.061-03:00,DEV-1121,LV-330,289990,"7,09",9,sin_abrir,REVISION,monto sobre el umbral: supera los 48000,48000,21
+2026-09-12T15:53:03.931-03:00,DEV-1122,PL-120,45990,"1,12",2,sin_abrir,APROBACION,"dentro de plazo, bajo el umbral y sin fallas: reembolso inmediato",48000,21
+2026-09-12T15:53:05.054-03:00,DEV-1123,AU-210,39980,"0,98",15,danado_por_uso,RECHAZO,producto danado por uso,48000,21
+2026-09-12T15:53:06.659-03:00,DEV-1124,HV-050,49980,"1,22",1,abierto_sin_uso,REVISION,monto sobre el umbral: supera los 48000,48000,21
+2026-09-12T15:53:08.047-03:00,DEV-1125,TE-330,34990,"0,86",22,sin_abrir,RECHAZO,"fuera de plazo: 22 dias, el maximo es 21",48000,21
+2026-09-12T15:53:09.776-03:00,DEV-1126,MW-150,79990,"1,96",8,con_fallas,REVISION,monto sobre el umbral: supera los 48000,48000,21
+2026-09-12T15:53:11.315-03:00,DEV-C01,CB-010,9990,"0,24",1,sin_abrir,APROBACION,"dentro de plazo, bajo el umbral y sin fallas: reembolso inmediato",48000,21
+2026-09-12T15:53:12.674-03:00,DEV-C02,LV-330,289990,"7,09",2,sin_abrir,REVISION,monto sobre el umbral: supera los 48000,48000,21
+2026-09-12T15:53:14.139-03:00,DEV-C03,MW-150,79990,"1,96",29,abierto_sin_uso,RECHAZO,"fuera de plazo: 29 dias, el maximo es 21",48000,21

@@ -15,7 +15,7 @@
 
 ### Estructura del Repositorio
 * [`ICN292-Lab3-Acevedo-Vicente.pdf`](./ICN292-Lab3-Acevedo-Vicente.pdf): Informe final del laboratorio.
-* [`ICN292-Lab3-Acevedo-Vicente.txt`](./ICN292-Lab3-Acevedo-Vicente.txt): Documento fuente.
+* [`ICN292-Lab3-Acevedo-Vicente.tex`](./ICN292-Lab3-Acevedo-Vicente.tex): Documento fuente.
 * [`ICN292-Lab3-Acevedo-Vicente-triage.json`](./ICN292-Lab3-Acevedo-Vicente-triage.json): Workflow exportado de n8n (Parte A).
 * [`ICN292-Lab3-Acevedo-Vicente-emisor.json`](./ICN292-Lab3-Acevedo-Vicente-emisor.json): Workflow auxiliar para el envío de solicitudes.
 * [`ICN292-Lab3-Acevedo-Vicente-resumen.json`](./ICN292-Lab3-Acevedo-Vicente-resumen.json): Workflow programado (Parte B).
